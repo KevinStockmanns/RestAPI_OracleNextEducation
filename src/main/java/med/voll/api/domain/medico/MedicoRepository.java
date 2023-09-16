@@ -13,6 +13,9 @@ public interface MedicoRepository extends JpaRepository<Medico, Long>{
 
     Page<Medico> findByActivoFalse(Pageable paginacion);
 
+
+    //Primer cambio en VScode
+
     @Query("""
             select m from Medico m
             where m.activo=1 and m.especialidad = :especialidad and m.id not in(
