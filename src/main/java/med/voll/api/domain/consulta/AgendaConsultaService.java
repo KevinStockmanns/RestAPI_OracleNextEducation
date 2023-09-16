@@ -1,8 +1,11 @@
 package med.voll.api.domain.consulta;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import med.voll.api.domain.consulta.validaciones.ValidadorDeConsultas;
 import med.voll.api.domain.medico.Medico;
 import med.voll.api.domain.medico.MedicoRepository;
 import med.voll.api.domain.paciente.Paciente;
@@ -20,6 +23,9 @@ public class AgendaConsultaService {
 
     @Autowired
     private ConsultaRepository consultaRepository;
+
+    @Autowired
+    List<ValidadorDeConsultas> validadores;
 
     public void agendar(DatosAgendarConsulta datos){
 
@@ -46,6 +52,12 @@ public class AgendaConsultaService {
         if(datos.especialidad() == null){
             throw new ValidacionDeIntegridad("Debe seleccionarse una especialidad para el médico");
         }
+
+
+        //validaciones
+        validadores.forEach(v->v.validar(datos));
+
+
         return medicoRepository.seleccionarMedicoConEspecialidadEnFecha(datos.especialidad(), datos.fecha());
     }
 }
