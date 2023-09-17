@@ -1,5 +1,6 @@
 package med.voll.api.domain.medico;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,13 +16,15 @@ import lombok.NoArgsConstructor;
 import med.voll.api.domain.direccion.Direccion;
 
 @Table(name = "medicos")
-@Entity(name = "medico")
+@Entity(name = "Medico")
 @Getter @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode(of = "id")
 public class Medico {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "activo")
     private Boolean activo;
     private String nombre;
     private String email;

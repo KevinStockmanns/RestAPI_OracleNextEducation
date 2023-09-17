@@ -27,22 +27,30 @@ public class AgendaConsultaService {
     @Autowired
     List<ValidadorDeConsultas> validadores;
 
-    public void agendar(DatosAgendarConsulta datos){
+    public DatosDetallesConsulta agendar(DatosAgendarConsulta datos){
 
-        if(pacienteRepository.findById(datos.idPaciente()).isPresent()){
+        if(!pacienteRepository.findById(datos.idPaciente()).isPresent()){
             throw new ValidacionDeIntegridad("Este id de para el paciente no fue encontrado");
         }
 
-        if (datos.idMedico() != null && medicoRepository.existsById(datos.idMedico())){
+        if (datos.idMedico() != null && !medicoRepository.existsById(datos.idMedico())){
             throw new ValidacionDeIntegridad("Este id para el medico no fue encontreado");
         }
     
+        //validaciones
+        validadores.forEach(v->v.validar(datos));
 
         Paciente paciente = pacienteRepository.findById(datos.idPaciente()).get();
         Medico medico = seleccionarMedico(datos);
 
+        if(medico == null){
+            throw new ValidacionDeIntegridad("No existe medicos disponibles para este horario.");
+        }
+
         var consulta = new Consulta(null, medico, paciente, datos.fecha());
         consultaRepository.save(consulta);
+
+        return new DatosDetallesConsulta(consulta);
     }
 
     private Medico seleccionarMedico(DatosAgendarConsulta datos) {
@@ -52,10 +60,6 @@ public class AgendaConsultaService {
         if(datos.especialidad() == null){
             throw new ValidacionDeIntegridad("Debe seleccionarse una especialidad para el médico");
         }
-
-
-        //validaciones
-        validadores.forEach(v->v.validar(datos));
 
 
         return medicoRepository.seleccionarMedicoConEspecialidadEnFecha(datos.especialidad(), datos.fecha());

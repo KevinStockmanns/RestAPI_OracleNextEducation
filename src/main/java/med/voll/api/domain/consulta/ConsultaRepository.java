@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ConsultaRepository extends JpaRepository<Consulta, Long>{
 
-    Boolean existsByPacienteIdAndFehcaBetween(Long idPaciente, LocalDateTime primerHorario, LocalDateTime ultmoHorario);
+    Boolean existsByPacienteIdAndFechaBetween(Long idPaciente, LocalDateTime primerHorario, LocalDateTime ultmoHorario);
 
     Boolean existsByMedicoIdAndFecha(Long idMedico, LocalDateTime fecha);
     

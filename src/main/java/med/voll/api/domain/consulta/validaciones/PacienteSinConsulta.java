@@ -17,7 +17,7 @@ public class PacienteSinConsulta implements ValidadorDeConsultas {
         var primerHorario = datos.fecha().withHour(7);
         var ultmoHorario = datos.fecha().withHour(18);
 
-        var pacienteConConsulta = consultaRepository.existsByPacienteIdAndFehcaBetween(datos.idPaciente(), primerHorario, ultmoHorario);
+        var pacienteConConsulta = consultaRepository.existsByPacienteIdAndFechaBetween(datos.idPaciente(), primerHorario, ultmoHorario);
 
         if(pacienteConConsulta){
             throw new ValidationException("El paciente ya tiene una consulta para ese día");
