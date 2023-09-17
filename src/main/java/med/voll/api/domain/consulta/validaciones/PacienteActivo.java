@@ -20,14 +20,6 @@ public class PacienteActivo implements ValidadorDeConsultas {
         }
 
         var pacienteActivo = pacienteRepository.findActivoById(datos.idPaciente());
-        System.out.println(pacienteActivo);
-        System.out.println("******************************");
-                System.out.println("******************************");
-
-                        System.out.println("******************************");
-
-                                System.out.println("******************************");
-
 
         if(!pacienteActivo){
             throw new ValidationException("No se puede permitir agendar citas con pacientes inactivos en el sistema");
